@@ -32,8 +32,8 @@ public class PlatformGenerator : MonoBehaviour
     public ObjectPooler spikePool;
 
     public float powerUpHeight;
-    public ObjectPooler powerUpPool;
-    public float powerUpThreshold;
+    // public ObjectPooler powerUpPool;
+    // public float powerUpThreshold;
 
 
     // Start is called before the first frame update
@@ -74,14 +74,14 @@ public class PlatformGenerator : MonoBehaviour
                 heightChange = minHeight;
             }
 
-            if(Random.Range(0f, 100f) < powerUpThreshold)
-            {
-                GameObject newPowerUp = powerUpPool.getPooledObject();
+            // if(Random.Range(0f, 100f) < powerUpThreshold)
+            // {
+            //     GameObject newPowerUp = powerUpPool.getPooledObject();
 
-                newPowerUp.transform.position = transform.position + new Vector3(distanceBetween / 2f, Random.Range(powerUpHeight / 2, powerUpHeight), 0f);
+            //     newPowerUp.transform.position = transform.position + new Vector3(distanceBetween / 2f, Random.Range(powerUpHeight / 2, powerUpHeight), 0f);
 
-                newPowerUp.SetActive(true);
-            }
+            //     newPowerUp.SetActive(true);
+            // }
 
 
             transform.position = new Vector3(transform.position.x + (platformWidths[PlatformSelector] / 2) + distanceBetween, heightChange, transform.position.z);

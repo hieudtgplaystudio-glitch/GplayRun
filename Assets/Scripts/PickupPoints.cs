@@ -27,10 +27,13 @@ public class PickupPoints : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name == "Player")
+        if (other.gameObject.name == "Player" || other.gameObject.tag == "Player")
         {
-            theScoreManager.addScore(scoreToGive);
-            gameObject.SetActive(false);
+            // Cộng điểm
+            theScoreManager.AddScore(scoreToGive);
+            
+            // Tắt đồng xu đi (hoặc Destroy(gameObject))
+            gameObject.SetActive(false); 
 
             if(coinSound.isPlaying)
             {

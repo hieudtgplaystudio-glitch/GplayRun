@@ -27,7 +27,7 @@ public class PowerUpManager : MonoBehaviour
         theScoreManager = GameObject.FindObjectOfType<ScoreManager>();
         thePlatformGenerator = GameObject.FindObjectOfType<PlatformGenerator>();
         theGameManager = FindObjectOfType<GameManager>();
-        normalPointsPerSecond = theScoreManager.pointsPerSecond;
+        // normalPointsPerSecond = theScoreManager.pointsPerSecond;
         spikeThreshold = thePlatformGenerator.randomSpikeThreshold;
     }
 
@@ -46,7 +46,7 @@ public class PowerUpManager : MonoBehaviour
 
             if(doublePoints)
             {
-                theScoreManager.pointsPerSecond = normalPointsPerSecond * 2;
+                // theScoreManager.pointsPerSecond = normalPointsPerSecond * 2;
                 theScoreManager.shouldDouble = true;
             }
 
@@ -58,7 +58,7 @@ public class PowerUpManager : MonoBehaviour
             if (powerUpLengthCounter <= 0)
             {
 
-                theScoreManager.pointsPerSecond = normalPointsPerSecond;
+                // theScoreManager.pointsPerSecond = normalPointsPerSecond;
                 theScoreManager.shouldDouble = false;
 
                 thePlatformGenerator.randomSpikeThreshold = spikeThreshold;

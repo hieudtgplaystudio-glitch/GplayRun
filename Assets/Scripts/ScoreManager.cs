@@ -11,7 +11,7 @@ public class ScoreManager : MonoBehaviour
     public Text scoreText;
     public Text highScore;
 
-    public float pointsPerSecond;
+    // public float pointsPerSecond;
 
     public bool scoreIncreasing;
 
@@ -29,10 +29,10 @@ public class ScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(scoreIncreasing)
-        {
-            scoreCount += pointsPerSecond * Time.deltaTime;
-        }
+        // if(scoreIncreasing)
+        // {
+        //     scoreCount += pointsPerSecond * Time.deltaTime;
+        // }
         if (scoreCount > highScoreCount)
         {
             highScoreCount = scoreCount;
@@ -43,12 +43,20 @@ public class ScoreManager : MonoBehaviour
         highScore.text = "High Score: " + Mathf.Round(highScoreCount);
     }
 
-    public void addScore(int pointsToAdd)
+    public void AddScore(int pointsToAdd)
     {
         if(shouldDouble)
         {
             pointsToAdd = pointsToAdd * 2;
         }
         scoreCount += pointsToAdd;
+    }
+
+    public void ReduceScore(int amount)
+    {
+        scoreCount -= amount; 
+
+        if(scoreCount < 0) 
+            scoreCount = 0; 
     }
 }
