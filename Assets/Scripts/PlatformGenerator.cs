@@ -19,6 +19,7 @@ public class PlatformGenerator : MonoBehaviour
     public ObjectPooler[] objPools;
 
     private float minHeight;
+    public Transform minHeightPoint;
     public Transform maxHeightPoint;
     private float maxHeight;
     public float maxHeightChange;
@@ -47,7 +48,7 @@ public class PlatformGenerator : MonoBehaviour
             platformWidths[i] = objPools[i].pooledObject.GetComponent<BoxCollider2D>().size.x;
         }
 
-        minHeight = transform.position.y;
+        minHeight = minHeightPoint.position.y;
         maxHeight = maxHeightPoint.position.y;
 
         theStarGenerator = FindObjectOfType<StarGenerator>();
@@ -57,7 +58,14 @@ public class PlatformGenerator : MonoBehaviour
     {
         if (transform.position.x < generationPoint.position.x)
         {
-            distanceBetween = Random.Range(distanceBetweenMin, distanceBetweenMax);
+            if (Random.Range(0f, 100f) < 30f) 
+{
+                distanceBetween = 0f; // Dính chặt vào nhau
+            }
+            else 
+            {
+                distanceBetween = Random.Range(distanceBetweenMin, distanceBetweenMax); 
+            }
 
             PlatformSelector = Random.Range(0, objPools.Length);
 

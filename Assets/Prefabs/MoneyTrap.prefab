@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3417956057644703638}
   - component: {fileID: 4316867156778126602}
   - component: {fileID: 2880737191370869991}
+  - component: {fileID: 2106483982549024739}
   m_Layer: 0
   m_Name: MoneyTrap
   m_TagString: killbox
@@ -79,7 +80,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.016515225, y: 1.1478063}
+  m_Offset: {x: 0.023582727, y: 0.94284976}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -90,8 +91,21 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1651518, y: 2.27167}
+  m_Size: {x: 0.81177837, y: 1.861757}
   m_EdgeRadius: 0
+--- !u!114 &2106483982549024739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520388147434209213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b92f32ebba9addb459126ca0f3bf11d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destructionPoint: {fileID: 0}
 --- !u!1 &1233374320134577572
 GameObject:
   m_ObjectHideFlags: 0

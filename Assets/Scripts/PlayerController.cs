@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
 
     public GameManager theGameManager;
 
+    [Header("Jump Settings")]
+    public float maxHeightLimit = 4f; // Độ cao tối đa được phép nhảy (tính theo trục Y)
+    public float hangTimeGravity = 0.2f; // Trọng lực khi đang lơ lửng ở đỉnh (nhỏ hơn 1 là bay chậm)
+    public float fallMultiplier = 4.5f;  // Khi rơi xuống thì rơi nhanh hơn cho có lực
+    private float defaultGravity;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +60,8 @@ public class PlayerController : MonoBehaviour
 
         stoppedJumping = true;
         startedJumping = false;
+
+        defaultGravity = myRigidbody.gravityScale;
     }
 
     // Update is called once per frame
@@ -73,6 +81,39 @@ public class PlayerController : MonoBehaviour
         }
 
         myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
+
+        // --- XỬ LÝ TRỌNG LỰC & TRẦN (ĐÃ SỬA) ---
+
+        // 1. Kiểm tra xem có đang ở trên trần không
+        bool isAboveCeiling = transform.position.y > maxHeightLimit;
+
+        // Nếu đang vượt quá trần
+        if (isAboveCeiling)
+        {
+            // Nếu vẫn đang cố bay lên -> Hãm phanh lại từ từ (Soft Ceiling)
+            if (myRigidbody.velocity.y > 0)
+            {
+                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, myRigidbody.velocity.y * 0.5f);
+            }
+
+            // QUAN TRỌNG: Khi đang ở trần, dùng trọng lực nhẹ (Hang Time) hoặc Bình thường
+            // Để tạo cảm giác "hơi khựng lại" (delay) trước khi rơi
+            myRigidbody.gravityScale = defaultGravity * hangTimeGravity; 
+        }
+        // 2. Nếu đang ở đỉnh cú nhảy (vận tốc gần bằng 0) -> Treo lơ lửng (Hang Time)
+        else if (Mathf.Abs(myRigidbody.velocity.y) < 0.5f)
+        {
+            myRigidbody.gravityScale = defaultGravity * hangTimeGravity;
+        }
+        // 3. Nếu đang rơi xuống (VÀ phải thấp hơn trần) -> Mới cho rơi nhanh
+        else if (myRigidbody.velocity.y < 0)
+        {
+            myRigidbody.gravityScale = defaultGravity * fallMultiplier;
+        }
+        else
+        {
+            myRigidbody.gravityScale = defaultGravity;
+        }
 
         if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
