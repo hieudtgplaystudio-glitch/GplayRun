@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public SpriteRenderer characterSprite;
+    public Sprite lamAnh;
+    public Sprite tinh;
+    public Sprite anhVu;
     public float moveSpeed;
     private float moveSpeedOriginal;
     public float speedMultiplier;
@@ -60,7 +64,20 @@ public class PlayerController : MonoBehaviour
 
         stoppedJumping = true;
         startedJumping = false;
+        int selected = PlayerPrefs.GetInt("SelectedCharacter", 0);
 
+        switch (selected)
+        {
+            case 0:
+                characterSprite.sprite = lamAnh;
+                break;
+            case 1:
+                characterSprite.sprite = tinh;
+                break;
+            case 2:
+                characterSprite.sprite = anhVu;
+                break;
+        }
         defaultGravity = myRigidbody.gravityScale;
     }
 
@@ -80,7 +97,7 @@ public class PlayerController : MonoBehaviour
             moveSpeed = moveSpeed * speedMultiplier;
         }
 
-        myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
+        myRigidbody.linearVelocity = new Vector2(moveSpeed, myRigidbody.linearVelocity.y);
 
         // --- XỬ LÝ TRỌNG LỰC & TRẦN (ĐÃ SỬA) ---
 
@@ -91,9 +108,9 @@ public class PlayerController : MonoBehaviour
         if (isAboveCeiling)
         {
             // Nếu vẫn đang cố bay lên -> Hãm phanh lại từ từ (Soft Ceiling)
-            if (myRigidbody.velocity.y > 0)
+            if (myRigidbody.linearVelocity.y > 0)
             {
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, myRigidbody.velocity.y * 0.5f);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, myRigidbody.linearVelocity.y * 0.5f);
             }
 
             // QUAN TRỌNG: Khi đang ở trần, dùng trọng lực nhẹ (Hang Time) hoặc Bình thường
@@ -101,12 +118,12 @@ public class PlayerController : MonoBehaviour
             myRigidbody.gravityScale = defaultGravity * hangTimeGravity; 
         }
         // 2. Nếu đang ở đỉnh cú nhảy (vận tốc gần bằng 0) -> Treo lơ lửng (Hang Time)
-        else if (Mathf.Abs(myRigidbody.velocity.y) < 0.5f)
+        else if (Mathf.Abs(myRigidbody.linearVelocity.y) < 0.5f)
         {
             myRigidbody.gravityScale = defaultGravity * hangTimeGravity;
         }
         // 3. Nếu đang rơi xuống (VÀ phải thấp hơn trần) -> Mới cho rơi nhanh
-        else if (myRigidbody.velocity.y < 0)
+        else if (myRigidbody.linearVelocity.y < 0)
         {
             myRigidbody.gravityScale = defaultGravity * fallMultiplier;
         }
@@ -119,14 +136,14 @@ public class PlayerController : MonoBehaviour
         {
             if (grounded)
             {
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, jumpForce);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
                 stoppedJumping = false;
                 startedJumping = true;
                 jumpSound.Play();
             }
             if (!grounded && canDoubleJump)
             {
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, jumpForce);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
                 jumpTimeCounter = jumpTime;
                 stoppedJumping = false;
                 canDoubleJump = false;
@@ -139,7 +156,7 @@ public class PlayerController : MonoBehaviour
         {
             if(jumpTimeCounter > 0)
             {
-                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, jumpForce);
+                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
                 jumpTimeCounter -= Time.deltaTime;
             }
 
@@ -158,7 +175,7 @@ public class PlayerController : MonoBehaviour
             startedJumping = false;
         }
 
-        myAnimator.SetFloat("Speed", myRigidbody.velocity.x);
+        myAnimator.SetFloat("Speed", myRigidbody.linearVelocity.x);
         myAnimator.SetBool("Grounded", grounded);
     }
 
@@ -166,12 +183,18 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.tag == "killbox")
         {
+            //PlatformDestroyer destroyer =
+            //other.gameObject.GetComponentInChildren<PlatformDestroyer>();
+
+            //if (destroyer != null && destroyer.myAnimator != null)
+            //{
+            //    destroyer.myAnimator.Play("VuNoLon");
+            //}
             theGameManager.RestartGame();
             moveSpeed = moveSpeedOriginal;
             speedUpDistanceCount = speedUpDistanceOriginal;
             speedUpDistance = speedUpDistanceOriginal;
             deathSound.Play();
-
         }
     }
 }

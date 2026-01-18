@@ -19,13 +19,14 @@ public class GameManager : MonoBehaviour
     public GameObject pauseButton;
 
     public bool powerUpReset;
+    private Vector3 temp;
 
     // Start is called before the first frame update
     void Start()
     {
         platformStartPoint = PlatformGenerator.position;
         PlayerStartPoint = thePlayer.transform.position;
-
+        temp = Camera.main.transform.position;
         theScoreManager = FindObjectOfType<ScoreManager>();
     }
 
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     public void Reset()
     {
+        Camera.main.transform.position = temp;
         theDeathMenu.gameObject.SetActive(false);
         pauseButton.SetActive(true);
         platformList = FindObjectsOfType<PlatformDestroyer>();
